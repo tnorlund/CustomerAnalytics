@@ -1,0 +1,13 @@
+Three datasets have been uploaded into Canvas.  These are:
+
+(1) Marketing_Campaign_Effectiveness.csv. 548 Rows
+
+(2) Marketing_Customer_Value_Analysis.csv   9,100+ rows
+
+(3) Customer_churn.csv, 7,040+ rows
+
+Please follow the Data Science Process explained in the lecture on Nov 12th (Business Understanding --> Data Understanding --> Exploratory Data Analysis --> Modeling --> Evaluation and Insights) to analyze the data to solve a specific business problem, and present your results.
+
+Please begin by examining the data, and formulating a Customer Analytics-relevant business problem that you would like to solve using the data.
+
+You can submit your Capstone project using Jupyter Notebook or an HTML file.
