@@ -1,3 +1,3 @@
 Tyler
 
-![alt text](https://github.com/tnorlund/CustomerAnalytics/test.png "Test")
+![alt text](https://raw.githubusercontent.com/tnorlund/CustomerAnalytics/master/test.png "Test")
