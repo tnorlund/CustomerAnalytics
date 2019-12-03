@@ -43,5 +43,18 @@ Finally, each customer pays a certain amount to receive the services the telecom
 
 ![alt text](https://raw.githubusercontent.com/tnorlund/CustomerAnalytics/master/Billing.png "Phone Service")
 
+### Model
 
+Using all these features, a model can be used to predict whether a customer will leave the company or not. The model I chose to use is a Deep Neural Network. After testing a few different models, I found that the network with 1 hidden layer produced the best results.
+
+After training the model, we can look at the how the training and validation performed.
+
+![alt text](https://raw.githubusercontent.com/tnorlund/CustomerAnalytics/master/TrainAndValidate.png "Training and Validation")
+
+### Results
+
+
+Although the model is only able to reach 80% accuracy, the model does perform well. When applying the model to the entire dataset, we see that the model is more likely to give the false positive of predicting customer churn when in fact there is no churn.
+
+![alt text](https://raw.githubusercontent.com/tnorlund/CustomerAnalytics/master/Confusion.png "Confusion Matrix")
 

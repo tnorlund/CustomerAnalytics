@@ -2,6 +2,9 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
 import os
+from keras import models
+from keras import layers
+from keras import optimizers
 
 def equalize_y(left_axis, right_axis):
     if left_axis.get_ylim()[1] > right_axis.get_ylim()[1]:
@@ -536,6 +539,290 @@ def plot_billing():
     )
     plt.close()
 
+def train_and_plot_model():
+    churn_df = pd.read_csv(
+        "Customer_Churn_Dataset.csv",
+        index_col=0
+    )
+    churn_df["gender"] = churn_df["gender"].astype("category").cat.codes.astype("float")
+    churn_df["SeniorCitizen"] = churn_df["SeniorCitizen"].astype("category").cat.codes.astype("float")
+    churn_df["Partner"] = churn_df["Partner"].astype("category").cat.codes.astype("float")
+    churn_df["Dependents"] = churn_df["Dependents"].astype("category").cat.codes.astype("float")
+    churn_df["tenure"] = churn_df["tenure"]/72
+    churn_df["PhoneService"] = churn_df["PhoneService"].astype("category").cat.codes.astype("float")
+    churn_df["MultipleLines"] = churn_df["MultipleLines"].astype("category").cat.codes/2
+    churn_df["InternetService"] = churn_df["InternetService"].astype("category").cat.codes/2
+    churn_df["OnlineSecurity"] = churn_df["OnlineSecurity"].astype("category").cat.codes/2
+    churn_df["OnlineBackup"] = churn_df["OnlineBackup"].astype("category").cat.codes/2
+    churn_df["DeviceProtection"] = churn_df["DeviceProtection"].astype("category").cat.codes/2
+    churn_df["TechSupport"] = churn_df["TechSupport"].astype("category").cat.codes/2
+    churn_df["StreamingTV"] = churn_df["StreamingTV"].astype("category").cat.codes/2
+    churn_df["StreamingMovies"] = churn_df["StreamingMovies"].astype("category").cat.codes/2 
+    churn_df["Contract"] = churn_df["Contract"].astype("category").cat.codes/2
+    churn_df["PaperlessBilling"] = churn_df["PaperlessBilling"].astype("category").cat.codes.astype("float")
+    churn_df["PaymentMethod"] = churn_df["PaymentMethod"].astype("category").cat.codes/3
+    churn_df["MonthlyCharges"] = churn_df["MonthlyCharges"]/118.75
+    churn_df["TotalCharges"] = churn_df["TotalCharges"].replace([" "], "0")
+    churn_df["TotalCharges"] = churn_df["TotalCharges"].astype(float)/999.9
+
+    # Target
+    churn_df["Churn"] = churn_df["Churn"].astype("category").cat.codes.astype("float")
+    x = churn_df[
+        [
+            "gender",
+            "SeniorCitizen",
+            "Partner",
+            "Dependents",
+            "tenure",
+            "PhoneService",
+            "MultipleLines",
+            "InternetService",
+            "OnlineSecurity",
+            "OnlineBackup",
+            "DeviceProtection",
+            "TechSupport",
+            "StreamingTV",
+            "StreamingMovies",
+            "Contract",
+            "PaperlessBilling",
+            "PaymentMethod",
+            "MonthlyCharges",
+            "TotalCharges"
+        ]
+    ].values
+    Y = churn_df["Churn"].values
+    max_epochs = 20
+    batch = 32
+    percent_split = .7
+    train_idx = round(x.shape[0]*percent_split)
+    x_train = x[:train_idx]
+    x_val = x[train_idx:]
+    y_train = Y[:train_idx]
+    y_val = Y[train_idx:]
+    model_1 = models.Sequential()
+    model_1.add(layers.Dense(8, activation = 'relu', input_shape = (19,)))
+    model_1.add(layers.Dense(1, activation = 'sigmoid'))
+    model_1.compile(
+        optimizer = optimizers.RMSprop(lr = 0.001), 
+        loss = 'binary_crossentropy', 
+        metrics = ['accuracy']
+    )
+    history_1 = model_1.fit(
+        x_train, 
+        y_train, 
+        epochs = max_epochs, 
+        batch_size = batch, 
+        validation_data = (x_val, y_val), 
+        verbose = 0
+    )
+    epochs = range(1, max_epochs + 1)
+    train_loss = history_1.history['loss']
+    val_loss = history_1.history['val_loss']
+    train_accuracy = history_1.history['accuracy']
+    val_accuracy = history_1.history['val_accuracy']
+    fig, ax = plt.subplots(1, 2, figsize=(10, 6))
+    ax[0].plot(epochs, train_loss, 'o', color="black", label = "Training Loss")
+    ax[0].plot(epochs, val_loss, color="red", label="Validation Loss")
+    ax[0].set_title(
+        "Training/Validation Loss",
+        fontdict={
+            'fontsize': 22,
+            'verticalalignment': 'baseline',
+            'horizontalalignment': "center"
+        }
+    )
+    ax[0].set_xlabel("Epochs")
+    ax[0].set_ylabel("Loss")
+    ax[0].legend()
+
+    ax[1].plot(epochs, train_accuracy, 'o', color="black", label = "Training Accuracy")
+    ax[1].plot(epochs, val_accuracy, color="green", label = "Validation Accuracy")
+    ax[1].set_title(
+        "Training/Validation Accuracy",
+        fontdict={
+            'fontsize': 22,
+            'verticalalignment': 'baseline',
+            'horizontalalignment': "center"
+        }
+    )
+    ax[1].set_xlabel("Epochs")
+    ax[1].set_ylabel("Accuracy")
+    ax[1].legend()
+
+    for axis in ax:
+        axis.spines['right'].set_visible(False)
+        axis.spines['top'].set_visible(False)
+        axis.yaxis.set_ticks_position('left')
+        axis.tick_params(
+            axis='y',
+            which='both',
+            labelsize=12
+        )
+        axis.tick_params(
+            axis='x',
+            which='both',
+            labelsize=12
+        )
+        axis.set_xlabel(
+            axis.get_xlabel(),
+            fontdict={
+                'fontsize': 15,
+                'verticalalignment': 'baseline',
+                'horizontalalignment': "center"
+            },
+            labelpad=15
+        )
+        axis.set_ylabel(
+            axis.get_ylabel(),
+            fontdict={
+                'fontsize': 15,
+                'verticalalignment': 'baseline',
+                'horizontalalignment': "center"
+            },
+            labelpad=15
+        )
+    plt.tight_layout()
+    plt.savefig(
+        "TrainAndValidate.png", 
+        bbox_inches="tight"
+    )
+    plt.close()
+    predictions_df = pd.DataFrame(
+        {
+            "Y":Y,
+            "predictions":model_1.predict(x).flatten().round()
+        }
+    )
+    font_size = 20
+    churn_correct = predictions_df[
+        (predictions_df["Y"] == 1) &
+        (predictions_df["predictions"] == 1)
+    ].shape[0] / predictions_df[
+        (predictions_df["Y"] == 1)
+    ].shape[0]
+
+    nochurn_correct = predictions_df[
+        (predictions_df["Y"] == 0) &
+        (predictions_df["predictions"] == 0)
+    ].shape[0] / predictions_df[
+        (predictions_df["Y"] == 0)
+    ].shape[0]
+    fig, ax = plt.subplots(1, 1, figsize=(10, 10))
+    color_map = plt.imshow([
+            [churn_correct, 1-nochurn_correct],
+            [1-churn_correct, nochurn_correct]
+        ])
+    color_map.set_cmap("Blues")
+    # plt.colorbar()
+
+    ax.set_ylabel(
+        "Actual",
+        fontdict={
+            'fontsize': 20,
+            'verticalalignment': 'baseline',
+            'horizontalalignment': "center"
+        },
+        labelpad=15
+    )
+    ax.set_xlabel(
+        "Predicted",
+        fontdict={
+            'fontsize': 20,
+            'verticalalignment': 'baseline',
+            'horizontalalignment': "center"
+        },
+        labelpad=15
+    )
+    labels = [item.get_text() for item in ax.get_xticklabels()]
+    labels[2] = "Churn"
+    labels[6] = "No Churn"
+    ax.set_xticklabels(labels)
+
+    labels = [item.get_text() for item in ax.get_yticklabels()]
+    labels[2] = "Churn"
+    labels[6] = "No Churn"
+    ax.set_yticklabels(labels)
+
+    ax.text(
+        .0,
+        .04,
+        str(
+            round(predictions_df[
+                (predictions_df["Y"] == 1) &(predictions_df["predictions"] == 1)
+            ].shape[0] / predictions_df[(predictions_df["Y"] == 1)
+            ].shape[0]*100)
+        ) + "%",
+        ha='center',
+        va='bottom',
+        fontsize=font_size,
+        color="white"
+    ) 
+    ax.text(
+        0,
+        1.04,
+        str(
+            round(predictions_df[
+                (predictions_df["Y"] == 1) &
+                (predictions_df["predictions"] == 0)
+            ].shape[0] / predictions_df[(predictions_df["Y"] == 1)
+            ].shape[0]*100) 
+        )+ "%",
+        ha='center',
+        va='bottom',
+        fontsize=font_size,
+        color="white"
+    ) 
+    ax.text(
+        1.0,
+        .04,
+        str(
+            round(predictions_df[
+                (predictions_df["Y"] == 0) &
+                (predictions_df["predictions"] == 1)
+            ].shape[0] / predictions_df[(predictions_df["Y"] == 0)
+            ].shape[0]*100) 
+        ) + "%",
+        ha='center',
+        va='bottom',
+        fontsize=font_size,
+        color="black"
+    )
+    ax.text(
+        1.0,
+        1.04,
+        str(
+            round(predictions_df[
+                (predictions_df["Y"] == 0) &
+                (predictions_df["predictions"] == 0)
+            ].shape[0] / predictions_df[(predictions_df["Y"] == 0)
+            ].shape[0]*100) 
+        ) + "%",
+        ha='center',
+        va='bottom',
+        fontsize=font_size,
+        color="white"
+    )
+
+    ax.tick_params(
+        axis='y',
+        which='both',
+        length=0,
+        labelsize=15
+    )
+    ax.tick_params(
+        axis='x',
+        which='both',
+        length=0,
+        labelsize=15
+    )
+    plt.savefig(
+        "Confusion.png", 
+        bbox_inches="tight"
+    )
+    plt.close()
+
+
+
 os.environ['KMP_DUPLICATE_LIB_OK']='True'
 
 parameter_dict = {
@@ -642,6 +929,7 @@ plot_internet()
 plot_support()
 plot_streaming()
 plot_billing()
+train_and_plot_model()
 
 
 
