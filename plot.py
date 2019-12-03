@@ -287,7 +287,7 @@ def plot_phone():
     plt.close()
 
 def plot_internet():
-    fig, ax = plt.subplots(3, 2, figsize=(10, 3*2))
+    fig, ax = plt.subplots(3, 2, figsize=(10, 3*3))
     ax[0][0].set_title(
         "No Churn",
         fontdict={
@@ -327,7 +327,7 @@ def plot_internet():
     plt.close()
 
 def plot_support():
-    fig, ax = plt.subplots(2, 2, figsize=(10, 2*2))
+    fig, ax = plt.subplots(2, 2, figsize=(10, 3*2))
     ax[0][0].set_title(
         "No Churn",
         fontdict={
@@ -362,7 +362,7 @@ def plot_support():
     plt.close()
 
 def plot_streaming():
-    fig, ax = plt.subplots(2, 2, figsize=(10, 2*2))
+    fig, ax = plt.subplots(2, 2, figsize=(10, 3*2))
     ax[0][0].set_title(
         "No Churn",
         fontdict={
@@ -413,12 +413,12 @@ parameter_dict = {
     "Partner": {
         "df":["No", "Yes"],
         "tick_labels":["No Partner", "Has Partner"],
-        "ylabel":"Having Partner"
+        "ylabel":"Partner"
     },
     "Dependents": {
         "df":["No", "Yes"],
         "tick_labels":["No Dependents", "Has Dependents"],
-        "ylabel":"Has Dependents"
+        "ylabel":"Dependents"
     },
     "tenure": {
         "ylabel":"Tenure"
