@@ -716,7 +716,7 @@ def train_and_plot_model():
     # plt.colorbar()
 
     ax.set_ylabel(
-        "Actual",
+        "Predicted",
         fontdict={
             'fontsize': 20,
             'verticalalignment': 'baseline',
@@ -725,7 +725,7 @@ def train_and_plot_model():
         labelpad=15
     )
     ax.set_xlabel(
-        "Predicted",
+        "Actual",
         fontdict={
             'fontsize': 20,
             'verticalalignment': 'baseline',
