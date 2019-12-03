@@ -27,6 +27,21 @@ The company also offers internet services for its customers. The customer's opti
 
 ![alt text](https://raw.githubusercontent.com/tnorlund/CustomerAnalytics/master/InternetService.png "Internet Service")
 
+The internet service allows for customers to stream many television series and movies to their devices.
+
+![alt text](https://raw.githubusercontent.com/tnorlund/CustomerAnalytics/master/Streaming.png "Internet Service")
+
 Not only does the company offer an internet service, the company offers a phone service. Each customer can chose to have the phone service, and they also have the option to obtain multiple lines.
 
 ![alt text](https://raw.githubusercontent.com/tnorlund/CustomerAnalytics/master/PhoneService.png "Phone Service")
+
+The telecommunications company also allows the customer to insure their devices through a device protection program. All customers have the privilege of calling in for customer support.
+
+![alt text](https://raw.githubusercontent.com/tnorlund/CustomerAnalytics/master/Support.png "Phone Service")
+
+Finally, each customer pays a certain amount to receive the services the telecommunications company offers. There are multiple ways for customers to pay their bills. The following graphs show the type of contract, the billing type, how the customer pays their bills, and how much the customers pay for their services.
+
+![alt text](https://raw.githubusercontent.com/tnorlund/CustomerAnalytics/master/Billing.png "Phone Service")
+
+
+

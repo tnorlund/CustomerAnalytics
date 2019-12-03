@@ -162,6 +162,96 @@ def plot_tertiary(left_axis, right_axis, parameter):
             labelsize=12
         )
 
+def plot_quaternary(left_axis, right_axis, parameter):
+    left_axis.bar(
+        [0, 1, 2, 3],
+        [
+            churn_df[
+                (churn_df["Churn"] == "No") & 
+                (churn_df[parameter] == parameter_dict[parameter]["df"][0])
+            ].shape[0],
+            churn_df[
+                (churn_df["Churn"] == "No") & 
+                (churn_df[parameter] == parameter_dict[parameter]["df"][1])
+            ].shape[0],
+            churn_df[
+                (churn_df["Churn"] == "No") & 
+                (churn_df[parameter] == parameter_dict[parameter]["df"][2])
+            ].shape[0],
+            churn_df[
+                (churn_df["Churn"] == "No") & 
+                (churn_df[parameter] == parameter_dict[parameter]["df"][3])
+            ].shape[0]
+        ],
+        color="green",
+        alpha=.8
+    )
+    right_axis.bar(
+        [0, 1, 2, 3],
+        [
+            churn_df[
+                (churn_df["Churn"] == "Yes") & 
+                (churn_df[parameter] == parameter_dict[parameter]["df"][0])
+            ].shape[0],
+            churn_df[
+                (churn_df["Churn"] == "Yes") & 
+                (churn_df[parameter] == parameter_dict[parameter]["df"][1])
+            ].shape[0],
+            churn_df[
+                (churn_df["Churn"] == "Yes") & 
+                (churn_df[parameter] == parameter_dict[parameter]["df"][2])
+            ].shape[0],
+            churn_df[
+                (churn_df["Churn"] == "Yes") & 
+                (churn_df[parameter] == parameter_dict[parameter]["df"][3])
+            ].shape[0]
+        ],
+        color="red",
+        alpha=.8
+    )
+    equalize_y(left_axis, right_axis)
+
+    for axis in [left_axis, right_axis]:
+        axis.spines['right'].set_visible(False)
+        axis.spines['top'].set_visible(False)
+        axis.yaxis.set_ticks_position('left')
+        axis.set_ylabel(
+            parameter_dict[parameter]["ylabel"],
+            fontdict={
+                'fontsize': 15,
+                'verticalalignment': 'baseline',
+                'horizontalalignment': "center"
+            },
+            labelpad=15
+        )
+        axis.tick_params(
+            axis='y',
+            which='both',
+            labelsize=12
+        )
+        axis.tick_params(
+            axis='x',
+            which='both',
+            labelsize=12
+        )
+        labels = [item.get_text() for item in axis.get_xticklabels()]
+        labels[1] = parameter_dict[parameter]["tick_labels"][0]
+        labels[2] = parameter_dict[parameter]["tick_labels"][1]
+        labels[3] = parameter_dict[parameter]["tick_labels"][2]
+        labels[4] = parameter_dict[parameter]["tick_labels"][3]
+        axis.set_xticklabels(labels)
+        axis.tick_params(
+            axis='y',
+            which='both',
+            labelsize=12
+        )
+        axis.tick_params(
+            axis='x',
+            which='both',
+            length=0,
+            labelsize=12
+        )
+
 def plot_linear(left_axis, right_axis, parameter):
     churn_df[churn_df["Churn"] == "No"][parameter].plot(
         kind='hist',
@@ -396,6 +486,55 @@ def plot_streaming():
     )
     plt.close()
 
+def plot_billing():
+    fig, ax = plt.subplots(5, 2, figsize=(10, 3*5))
+    ax[0][0].set_title(
+        "No Churn",
+        fontdict={
+                'fontsize': 22,
+                'verticalalignment': 'baseline',
+                'horizontalalignment': "center"
+            }
+    )
+    ax[0][1].set_title(
+        "Churn",
+        fontdict={
+                'fontsize': 22,
+                'verticalalignment': 'baseline',
+                'horizontalalignment': "center"
+            }
+    )
+    plot_tertiary(
+        left_axis=ax[0][0],
+        right_axis=ax[0][1],
+        parameter="Contract"
+    )
+    plot_binary(
+        left_axis=ax[1][0],
+        right_axis=ax[1][1],
+        parameter="PaperlessBilling"
+    )
+    plot_quaternary(
+        left_axis=ax[2][0],
+        right_axis=ax[2][1],
+        parameter="PaymentMethod"
+    )
+    plot_linear(
+        left_axis=ax[3][0],
+        right_axis=ax[3][1],
+        parameter="MonthlyCharges"
+    )
+    plot_linear(
+        left_axis=ax[4][0],
+        right_axis=ax[4][1],
+        parameter="TotalCharges"
+    )
+    plt.tight_layout()
+    plt.savefig(
+        "Billing.png", 
+        bbox_inches="tight"
+    )
+    plt.close()
 
 os.environ['KMP_DUPLICATE_LIB_OK']='True'
 
@@ -468,6 +607,28 @@ parameter_dict = {
         "tick_labels":["No Movie Streaming", "Has Movie Streaming"],
         "ylabel":"Movie Streaming"
     },
+    "Contract": {
+        "df":['Month-to-month', 'One year', 'Two year'],
+        "tick_labels":['Month-to-month', '1 year', '2 year'],
+        "ylabel":"Contract"
+    },
+    "PaperlessBilling": {
+        "df":["No", "Yes"],
+        "tick_labels":["No Paperless Billing", "Has Paperless Billing"],
+        "ylabel":"Paperless Billing"
+    },
+    "PaymentMethod": {
+        "df":['Electronic check', 'Mailed check', 'Bank transfer (automatic)',
+       'Credit card (automatic)'],
+        "tick_labels":["Electronic\nCheck", "Mailed\nCheck", "Bank\nTransfer", "Credit\nCard"],
+        "ylabel":"Payment Method"
+    },
+    "MonthlyCharges": {
+        "ylabel":"Monthly Charge"
+    },
+    "TotalCharges": {
+        "ylabel":"Total Charge"
+    }
 }
 
 churn_df = pd.read_csv(
@@ -480,8 +641,7 @@ plot_phone()
 plot_internet()
 plot_support()
 plot_streaming()
-
-#gender SeniorCitizen   Partner Dependents
+plot_billing()
 
 
 
