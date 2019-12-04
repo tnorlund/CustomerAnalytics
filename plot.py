@@ -6,6 +6,49 @@ from keras import models
 from keras import layers
 from keras import optimizers
 
+def plot_sales_per_location():
+    campaign_df = pd.read_csv("Marketing_Campaign_Effectiveness.csv")
+    sales_per_location = [
+        campaign_df[campaign_df["LocationID"] == location_id]["SalesInThousands"].tolist()
+        for location_id in campaign_df["LocationID"].unique()
+    ]
+
+    fig, ax = plt.subplots(1, 1, figsize=(10, 6))
+    ax.violinplot(sales_per_location)
+    ax.set_xticklabels(ax.get_xticks())
+    ax.set_yticklabels(ax.get_yticks())
+    ax.spines['right'].set_visible(False)
+    ax.spines['top'].set_visible(False)
+    ax.yaxis.set_ticks_position('left')
+    plt.tick_params(
+        axis='x',          # changes apply to the x-axis
+        which='both',      # both major and minor ticks are affected
+        bottom=False,      # ticks along the bottom edge are off
+        top=False,         # ticks along the top edge are off
+        labelbottom=False) # labels along the bottom edge are off
+    ax.tick_params(
+        axis='y',
+        which='both',
+        labelsize=15
+    )
+
+    ax.set_yticklabels(
+        [
+            "" if item.get_text() == "0.0" 
+            else"$" + str(int(float(item.get_text()))) + "k"
+            for item in ax.get_yticklabels()
+        ]
+    )
+    ax.set_xticklabels([])
+    ax.set_ylabel("Sales", fontsize=20)
+    ax.set_title("Sales Per Location", fontsize=22)
+    plt.tight_layout()
+    plt.savefig(
+        "SalesPerLocation.png", 
+        bbox_inches="tight"
+    )
+    plt.close()
+
 def equalize_y(left_axis, right_axis):
     if left_axis.get_ylim()[1] > right_axis.get_ylim()[1]:
         right_axis.set_ylim(left_axis.get_ylim())
@@ -923,6 +966,7 @@ churn_df = pd.read_csv(
     index_col=0
 )
 churn_df["TotalCharges"] = churn_df["TotalCharges"].replace([" "], "0").astype("float")
+plot_sales_per_location()
 plot_demographics()
 plot_phone()
 plot_internet()

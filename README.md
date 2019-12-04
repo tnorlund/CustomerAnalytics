@@ -3,6 +3,14 @@
 
 ## Campaign Effectiveness
 
+Advertising campaigns have the possibility of being extremely effective or a waste of money.
+
+Companies can compare how customers respond to specific advertising campaigns by using different campaigns for different customers or store locations. The following data is an example of how a business can use different advertising campaigns for different markets.
+
+### Data
+
+![alt text](https://raw.githubusercontent.com/tnorlund/CustomerAnalytics/master/SalesPerLocation.png "Sales Per Location")
+
 ## Customer Churn
 
 *Customer churn* is determined by whether the customer decides to finish their relationship with a company. 
