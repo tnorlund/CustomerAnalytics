@@ -25,6 +25,9 @@ We can continue the data analysis by looking at how the age of the store effects
 
 Here we see that the best performing stores are between 10 and 15 years old. 
 
+### Results
+
+After looking at the data, we can make some business decisions surrounding the advertising campaign. We now that the larger market sizes perform better than the smaller or medium sized market sizes. We also found that the best performing stores were between 10 and 15 years old. With this insight, we would be able to emulate these characteristics in under performing stores in order to optimize each stores performance. 
 
 ## Customer Churn
 
