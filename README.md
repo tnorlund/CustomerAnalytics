@@ -9,7 +9,22 @@ Companies can compare how customers respond to specific advertising campaigns by
 
 ### Data
 
+Each advertising campaign was tried at different locations. The following graph shows how the different locations produce different results (sales).
+
 ![alt text](https://raw.githubusercontent.com/tnorlund/CustomerAnalytics/master/SalesPerLocation.png "Sales Per Location")
+
+Here we see that some stores perform better than others. Continuing the exploratory analysis, the results of different sized stores can be compared.
+
+![alt text](https://raw.githubusercontent.com/tnorlund/CustomerAnalytics/master/SalesMarketSize.png "Sales Market Size")
+
+We can see that the larger sized stores perform the best. Not only does the size of the store determine the sales, but it also determines how much money is required to keep the store running. If the cost of maintaining the stores were given, we would be able to give a better estimate surrounding what stores to keep and which to drop. 
+
+We can continue the data analysis by looking at how the age of the store effects sales.
+
+![alt text](https://raw.githubusercontent.com/tnorlund/CustomerAnalytics/master/SalesStoreAge.png "Sales Age of Store")
+
+Here we see that the best performing stores are between 10 and 15 years old. 
+
 
 ## Customer Churn
 

@@ -13,7 +13,10 @@ def plot_sales_per_location():
         for location_id in campaign_df["LocationID"].unique()
     ]
 
-    fig, ax = plt.subplots(1, 1, figsize=(10, 6))
+    fig, ax = plt.subplots(1, 1, figsize=(10, 6
+
+
+        ))
     ax.violinplot(sales_per_location)
     ax.set_xticklabels(ax.get_xticks())
     ax.set_yticklabels(ax.get_yticks())
@@ -45,6 +48,90 @@ def plot_sales_per_location():
     plt.tight_layout()
     plt.savefig(
         "SalesPerLocation.png", 
+        bbox_inches="tight"
+    )
+    plt.close()
+
+def plot_market_size():
+    campaign_df = pd.read_csv("Marketing_Campaign_Effectiveness.csv")
+    sales_per_location = [
+        campaign_df[campaign_df["MarketSize"] == location_id]["SalesInThousands"].tolist()
+        for location_id in ['Small','Medium','Large']
+    ]
+
+    fig, ax = plt.subplots(1, 1, figsize=(10, 6))
+    ax.violinplot(sales_per_location)
+    ax.set_xticklabels(ax.get_xticks())
+    ax.set_yticklabels(ax.get_yticks())
+    ax.spines['right'].set_visible(False)
+    ax.spines['top'].set_visible(False)
+    ax.yaxis.set_ticks_position('left')
+    start, end = ax.get_xlim()
+    ax.xaxis.set_ticks(np.arange(1, 4, 1))
+    ax.set_xticklabels(["Small", "Medium", "Large"])
+    ax.tick_params(
+        axis='both',
+        which='both',
+        labelsize=12
+    )
+
+    ax.set_yticklabels(
+        [
+            "" if item.get_text() == "0.0" 
+            else"$" + str(int(float(item.get_text()))) + "k"
+            for item in ax.get_yticklabels()
+        ]
+    )
+    ax.set_ylabel("Sales", fontsize=20)
+    ax.set_title("Sales Per Market Size", fontsize=22)
+    plt.tight_layout()
+    plt.savefig(
+        "SalesMarketSize.png", 
+        bbox_inches="tight"
+    )
+    plt.close()
+
+def plot_store_age():
+    campaign_df = pd.read_csv("Marketing_Campaign_Effectiveness.csv")
+    campaign_df.sort_values('AgeOfStore')
+    sales_per_age = [
+        campaign_df[campaign_df["AgeOfStore"] == age]["SalesInThousands"].tolist()
+        for age in campaign_df["AgeOfStore"].unique()
+    ]
+
+    fig, ax = plt.subplots(1, 1, figsize=(10, 6))
+    violin_plot = ax.violinplot(sales_per_age)
+    ax.set_xticklabels(ax.get_xticks())
+    ax.set_yticklabels(ax.get_yticks())
+    ax.spines['right'].set_visible(False)
+    ax.spines['top'].set_visible(False)
+    ax.yaxis.set_ticks_position('left')
+    ax.set_yticklabels(
+        [
+            "$" + str(int(float(item.get_text()))) + "k"
+            for item in ax.get_yticklabels()
+        ]
+    )  
+    xticks = ax.xaxis.get_major_ticks()
+    xticks[1].set_visible(False)
+    ax.set_xticklabels(
+        [
+            "" if item.get_text() == "0.0" or item.get_text() == "-5.0"
+            else str(int(float(item.get_text())))
+            for item in ax.get_xticklabels()
+        ]
+    )
+    ax.tick_params(
+        axis='both',
+        which='both',
+        labelsize=12
+    )
+    ax.set_ylabel("Sales", fontsize=20)
+    ax.set_xlabel("Age of Store", fontsize=20)
+    ax.set_title("Sales Per Age of Store", fontsize=22)
+    plt.tight_layout()
+    plt.savefig(
+        "SalesStoreAge.png", 
         bbox_inches="tight"
     )
     plt.close()
@@ -967,6 +1054,8 @@ churn_df = pd.read_csv(
 )
 churn_df["TotalCharges"] = churn_df["TotalCharges"].replace([" "], "0").astype("float")
 plot_sales_per_location()
+plot_market_size()
+plot_store_age()
 plot_demographics()
 plot_phone()
 plot_internet()
