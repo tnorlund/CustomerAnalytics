@@ -77,7 +77,7 @@ After training the model, we can look at the how the training and validation per
 ### Results
 
 
-Although the model is only able to reach 80% accuracy, the model does perform well. When applying the model to the entire dataset, we see that the model is more likely to give the false positive of predicting customer churn when in fact there is no churn.
+Although the model is only able to reach 80% accuracy, the model does perform well. When applying the model to the entire dataset, we see that the model is more likely to give the false positive of predicting no customer churn when in fact there is churn.
 
 ![alt text](https://raw.githubusercontent.com/tnorlund/CustomerAnalytics/master/Confusion.png "Confusion Matrix")
 

@@ -44,7 +44,7 @@ def plot_sales_per_location():
     )
     ax.set_xticklabels([])
     ax.set_ylabel("Sales", fontsize=20)
-    ax.set_title("Sales Per Location", fontsize=22)
+    ax.set_title("Sales per Location", fontsize=22)
     plt.tight_layout()
     plt.savefig(
         "SalesPerLocation.png", 
@@ -72,7 +72,7 @@ def plot_market_size():
     ax.tick_params(
         axis='both',
         which='both',
-        labelsize=12
+        labelsize=15
     )
 
     ax.set_yticklabels(
@@ -83,7 +83,7 @@ def plot_market_size():
         ]
     )
     ax.set_ylabel("Sales", fontsize=20)
-    ax.set_title("Sales Per Market Size", fontsize=22)
+    ax.set_title("Sales vs. Market Size", fontsize=22)
     plt.tight_layout()
     plt.savefig(
         "SalesMarketSize.png", 
@@ -124,11 +124,11 @@ def plot_store_age():
     ax.tick_params(
         axis='both',
         which='both',
-        labelsize=12
+        labelsize=15
     )
     ax.set_ylabel("Sales", fontsize=20)
     ax.set_xlabel("Age of Store", fontsize=20)
-    ax.set_title("Sales Per Age of Store", fontsize=22)
+    ax.set_title("Sales vs. Age of Store", fontsize=22)
     plt.tight_layout()
     plt.savefig(
         "SalesStoreAge.png", 
